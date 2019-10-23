@@ -92,6 +92,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+        if($student->studentGrades->count()){
+            return 'Trinti negalima, nes turi pažymių';
+        }
+ 
         $student->delete();
         return redirect()->route('student.index');
     }

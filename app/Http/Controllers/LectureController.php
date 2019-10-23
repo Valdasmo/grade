@@ -90,7 +90,7 @@ return redirect()->route('lecture.index');
      */
     public function destroy(Lecture $lecture)
     {
-        if($lecture->lecturegrades->count()){
+        if($lecture->lectureGrades->count()){
             return 'Trinti negalima, nes studentai lanko šią paskaitą!';
         }
         $lecture->delete();

@@ -14,10 +14,23 @@ class GradeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $grades = Grade::all();
-        return view('grade.index', ['grades' => $grades]);
+        $filter = $request->get('filter', '');
+        $students = Student::all();
+        if ($filter) {
+            $grades = Grade::where('student_id', $filter)->get(); // db
+
+        } else {
+            $grades = Grade::all(); //<<-- šita eilutė čia įdedama //paėmus ją iš viršaus (buvo po šia eilute: public function index())
+        }
+
+
+        return view('grade.index', [
+            'grades' => $grades,
+            'students' => $students,
+            'filter' => $filter ?? 0
+        ]);
     }
 
     /**
@@ -45,7 +58,7 @@ class GradeController extends Controller
         $grade->student_id = $request->student_id;
         $grade->lecture_id = $request->lecture_id;
         $grade->save();
-        return redirect()->route('grade.index');
+        return redirect()->route('grade.index')->with('success_message', 'Sekmingai įrašytas.');
     }
 
     /**
@@ -89,7 +102,7 @@ class GradeController extends Controller
         $grade->student_id = $request->student_id;
         $grade->lecture_id = $request->lecture_id;
         $grade->save();
-        return redirect()->route('grade.index');
+        return redirect()->route('grade.index')->with('success_message', 'Sėkmingai pakeistas.');
     }
 
     /**
@@ -102,6 +115,6 @@ class GradeController extends Controller
     {
 
         $grade->delete();
-        return redirect()->route('grade.index');
+        return redirect()->route('grade.index')->with('success_message', 'Sekmingai ištrintas.');
     }
 }

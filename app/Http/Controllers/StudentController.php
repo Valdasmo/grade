@@ -42,7 +42,7 @@ class StudentController extends Controller
         $student->email = $request->student_email;
         $student->phone = $request->student_phone;
         $student->save();
-        return redirect()->route('student.index');
+        return redirect()->route('student.index')->with('success_message', 'Sekmingai įrašytas.');
     }
 
     /**
@@ -81,7 +81,7 @@ class StudentController extends Controller
         $student->email = $request->student_email;
         $student->phone = $request->student_phone;
         $student->save();
-        return redirect()->route('student.index');
+        return redirect()->route('student.index')->with('success_message', 'Sėkmingai pakeistas.');
     }
 
     /**
@@ -93,10 +93,10 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         if($student->studentGrades->count()){
-            return 'Trinti negalima, nes turi pažymių';
+            return redirect()->route('student.index')->with('info_message', 'Trinti negalima, nes turi pažymių!');
         }
  
         $student->delete();
-        return redirect()->route('student.index');
+        return redirect()->route('student.index')->with('success_message', 'Sekmingai ištrintas.');
     }
 }

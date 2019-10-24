@@ -41,7 +41,7 @@ class LectureController extends Controller
 $lecture->name = $request->lecture_name;
 $lecture->description = $request->lecture_description;
 $lecture->save();
-return redirect()->route('lecture.index');
+return redirect()->route('lecture.index')->with('success_message', 'Sekmingai įrašytas.');
 
     }
 
@@ -79,7 +79,7 @@ return redirect()->route('lecture.index');
         $lecture->name = $request->lecture_name;
         $lecture->description = $request->lecture_description;
         $lecture->save();
-        return redirect()->route('lecture.index');
+        return redirect()->route('lecture.index')->with('success_message', 'Sėkmingai pakeistas.');
     }
 
     /**
@@ -91,9 +91,9 @@ return redirect()->route('lecture.index');
     public function destroy(Lecture $lecture)
     {
         if($lecture->lectureGrades->count()){
-            return 'Trinti negalima, nes studentai lanko šią paskaitą!';
+            return redirect()->route('lecture.index')->with('info_message', 'Trinti negalima, nes studentai lanko šią paskaitą!');
         }
         $lecture->delete();
-        return redirect()->route('lecture.index');
+        return redirect()->route('lecture.index')->with('success_message', 'Sekmingai ištrintas.');
     }
 }

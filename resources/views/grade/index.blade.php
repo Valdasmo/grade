@@ -5,7 +5,22 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">PAVADINIMAS</div>
+        <div class="card-header">Studentų pažymiai</div>
+
+         {{-- Filtravimas start --}}
+ 
+         <form method="GET" action="{{route('grade.index')}}">
+            <select class="form-control" name="filter">
+                @foreach ($students as $student)
+                <option value="{{$student->id}}" @if($student->id==$filter) selected @endif>{{$student->name}}
+                    {{$student->surname}}</option>
+                @endforeach
+            </select>
+
+            <br>
+            <button type="submit">Rodyti studento pažymius</button>
+        </form>
+        {{-- Filtravimas end --}}
 
         <div class="card-body">
 
